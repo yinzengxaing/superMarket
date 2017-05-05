@@ -20,6 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import com.superMarket.baseFile.BaseFilePanel;
+import com.superMarket.purchase.BasePurchasePanel;
+import com.superMarket.purchase.bean.Purchase;
+import com.superMarket.purchase.view.PurchasePanel;
 import com.superMarket.utils.ImgPanel;
 
 import java.awt.BorderLayout;
@@ -95,6 +98,7 @@ public class MainFrame {
 		button.setContentAreaFilled(false);
 		button.setBounds(185, 0, 104, 44);
 		panel.add(button);
+		button.addActionListener(new OrderButtenListener());
 
 		// 入库管理按钮
 		JButton button_1 = new JButton();
@@ -228,7 +232,11 @@ public class MainFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
+			backPanel.removeAll();
+			BasePurchasePanel basePurchasePanel = new BasePurchasePanel();
+			backPanel.add(basePurchasePanel);
+			backPanel.validate();
+			backPanel.repaint();
 		}
 
 	}
