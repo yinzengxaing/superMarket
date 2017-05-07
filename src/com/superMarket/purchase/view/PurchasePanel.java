@@ -4,11 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -18,34 +20,23 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
-import com.superMarket.baseFile.supplier.bean.Supplier;
-import com.superMarket.baseFile.supplier.dao.SupplierDao;
-import com.superMarket.baseFile.supplier.dao.SupplierDaoImpl;
-import com.superMarket.baseFile.supplier.model.SupplierTableModel;
-import com.superMarket.baseFile.supplier.view.AddSupplierFrame;
-import com.superMarket.baseFile.supplier.view.UpdateSupplierFrame;
+import com.superMarket.purchase.bean.Purchase;
 import com.superMarket.purchase.dao.PurchaseDao;
 import com.superMarket.purchase.dao.PurchaseDaoImpl;
-import com.superMarket.purchase.model.ButtonEditor;
-import com.superMarket.purchase.model.ButtonRenderer;
 import com.superMarket.purchase.model.MyRender;
 import com.superMarket.purchase.model.PurchaseTableModel;
-import com.superMarket.baseFile.supplier.view.SupplierPanel.AddButtonListener;
-import com.superMarket.baseFile.supplier.view.SupplierPanel.DeleteButtonListener;
-import com.superMarket.baseFile.supplier.view.SupplierPanel.SearchButtonListener;
-import com.superMarket.baseFile.supplier.view.SupplierPanel.UpdateButtonListener;
 
 public class PurchasePanel {
 
 	
 	private JPanel myPanel;//主界面
-	private JTextField textField; //供应商名称输入框
+	private JComboBox<String> itemsBox;
 	private JTextField textField_1; //地址输入框
 	public  static JTable table;
-	private JPanel tablePanel;
+	public static JPanel tablePanel;
 	private  PurchaseTableModel  model; 
-	private MyRender myRender = new MyRender();
 	private PurchaseDao purchaseDao = new PurchaseDaoImpl();
+	private String SelectItem;
 	public JPanel getPurchasePanel(){
 
 		myPanel = new JPanel();
@@ -58,22 +49,26 @@ public class PurchasePanel {
 		myPanel.add(panel);
 		panel.setLayout(null);
 		
-		JLabel label = new JLabel("供货商名称：");
+		JLabel label = new JLabel("查询条件：");
 		label.setBounds(10, 21, 78, 15);
 		panel.add(label);
 		
-		textField = new JTextField();
-		textField.setBounds(91, 18, 86, 21);
-		panel.add(textField);
-		textField.setColumns(10);
+		itemsBox  = new JComboBox<String>();
+		itemsBox.addItem("请选择...");
+		itemsBox.addItem("客户名");
+		itemsBox.addItem("商品名");
+		itemsBox.setBounds(91, 18, 86, 21);
+		panel.add(itemsBox);
+		itemsBox.addItemListener(new ItemsListener());
+/*		
 		
 		JLabel label_1 = new JLabel("地址：");
 		label_1.setBounds(187, 21, 54, 15);
-		panel.add(label_1);
+		panel.add(label_1);*/
 		
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
-		textField_1.setBounds(223, 18, 86, 21);
+		textField_1.setBounds(180, 18, 130, 21);
 		panel.add(textField_1);
 		
 		JButton button_search = new JButton("搜索");
@@ -107,16 +102,32 @@ public class PurchasePanel {
 		tablePanel.add(scrollPane);
 		model= new PurchaseTableModel();
 		table = new JTable(model);
-		
-		
+
         //添加渲染器
-        table.getColumn("是否入库").setCellRenderer(new ButtonRenderer());
-        //添加编辑器
-        table.getColumn("是否入库").setCellEditor( new ButtonEditor(new JCheckBox()));
+		table.getColumnModel().getColumn(0).setCellEditor(new MyRender());//设置编辑器
+		table.getColumnModel().getColumn(0).setCellRenderer(new MyRender());
+		
 		scrollPane.setViewportView(table);
-		scrollPane.setBorder(BorderFactory.createTitledBorder("供货商信息"));
+		scrollPane.setBorder(BorderFactory.createTitledBorder("订单信息"));
 
 		return myPanel;
+		
+	}
+	
+	/**
+	 * 选择项监听器
+	 * @author administrator
+	 *
+	 */
+	public class  ItemsListener  implements ItemListener{
+
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			if (e.getStateChange() == ItemEvent.SELECTED){
+				String item = (String)itemsBox.getSelectedItem();
+				SelectItem = item;
+			}
+		}
 		
 	}
 	
@@ -129,10 +140,7 @@ public class PurchasePanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		/*	textField.setText("");
-			textField_1.setText("");
-		AddSupplierFrame addSuppliserFrame = new AddSupplierFrame();*/
-		
+			new AddPurchaseFrame();
 		}
 		
 	}
@@ -192,46 +200,40 @@ public class PurchasePanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-	/*		String name = textField.getText();
-			String address = textField_1.getText();
-			List<Supplier> list = null;
-			if (name.equals("") && !address.equals("") ){
-				list= dao.getSupplierListByAddress(address);
-				if (list.isEmpty()){
-					JOptionPane.showMessageDialog(null, "未查询到该关键字,请重试！", "警告", JOptionPane.ERROR_MESSAGE);
-					textField.setText("");
-					textField_1.setText("");
-				return;	
-				}
-				table.removeAll();
-				model.setData(list);
-				table.setModel(model);
-			}else if(!name.equals("") && address.equals("")){
-				list = dao.getSupplierListByName(name);
-				if (list.isEmpty()){
-					JOptionPane.showMessageDialog(null, "未查询到该关键字,请重试！", "警告", JOptionPane.ERROR_MESSAGE);
-					textField.setText("");
-					textField_1.setText("");
-				return;	
-				}
-				model.setData(list);
-				table.setModel(model);
-			}else if (!name.equals("") && !address.equals("")){
-				list = dao.getSupplierListByAddressAndName(name, address);
-				if (list.isEmpty()){
-					JOptionPane.showMessageDialog(null, "未查询到该关键字,请重试！", "警告", JOptionPane.ERROR_MESSAGE);
-					textField.setText("");
-					textField_1.setText("");
-				return;	
-				}
-				model.setData(list);
-				table.setModel(model);
-			}else if (name.equals("") && address.equals("")){
-				list = dao.getSuppliserList();
-				model.setData(list);
-				table.setModel(model);
-			}*/
 			
+			List<Purchase> list = null;
+			String SelectStr = textField_1.getText();
+			System.out.println(SelectItem);
+			if (SelectItem== null || SelectItem.equals("请选择...")){
+				JOptionPane.showMessageDialog(null, "请选择查询条件", "警告", JOptionPane.ERROR_MESSAGE);
+				textField_1.setText("");
+				return;
+			}else if (SelectItem.equals("客户名")){
+				 list = purchaseDao.getPurchaseListBySName(SelectStr);
+				 if (list.isEmpty()){
+						JOptionPane.showMessageDialog(null, "未查询到该关键字,请重试！", "警告", JOptionPane.ERROR_MESSAGE);
+						textField_1.setText("");
+					return;	
+					}
+					table.removeAll();
+					table.setModel(new PurchaseTableModel(list));
+					table.getColumnModel().getColumn(0).setCellEditor(new MyRender());//设置编辑器
+					table.getColumnModel().getColumn(0).setCellRenderer(new MyRender());
+				 
+			}else if (SelectItem.equals("商品名")){
+				 list = purchaseDao.getPurchaseListByGoodsName(SelectStr);
+				 if (list.isEmpty()){
+						JOptionPane.showMessageDialog(null, "未查询到该关键字,请重试！", "警告", JOptionPane.ERROR_MESSAGE);
+						textField_1.setText("");
+					return;	
+					}
+					table.removeAll();
+					table.setModel(new PurchaseTableModel(list));
+					table.getColumnModel().getColumn(0).setCellEditor(new MyRender());//设置编辑器
+					table.getColumnModel().getColumn(0).setCellRenderer(new MyRender());
+				 
+			}
+				
 		}
 		
 	}

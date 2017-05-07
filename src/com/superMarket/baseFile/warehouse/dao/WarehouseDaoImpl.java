@@ -50,7 +50,6 @@ public class WarehouseDaoImpl extends BaseDao<Warehouse> implements WarehouseDao
 	public int updateWarehouse(Warehouse warehouse) {
 		String sql="UPDATE warehouse SET name=?, principal=?, bewrite=? where id=?";
 		return this.update(sql, warehouse.getName(), warehouse.getPrincipal(), warehouse.getBewrite(),warehouse.getId());
-		
 	}
 
 }

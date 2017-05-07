@@ -6,32 +6,32 @@ public class Purchase {
 	private String sName;
 	private String orderId;
 	private String consignmentDate;//交货日期
-	private String goodsNsme;
+	private String goodsName;
 	private int count;
 	private Double money;
 	private int isInStock = 0; //0：未入库  1：入库 初始为 未入库
 	private int warehouseId = 0 ; //所属库房编号 ， 未入库的情况下所属库房编号为0;
-	public Purchase(String id, String sName, String orderId, String consignmentDate, String goodsNsme, int count,
+	public Purchase() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Purchase(String id, String sName, String orderId, String consignmentDate, String goodsName, int count,
 			Double money, int isInStock, int warehouseId) {
 		super();
 		this.id = id;
 		this.sName = sName;
 		this.orderId = orderId;
 		this.consignmentDate = consignmentDate;
-		this.goodsNsme = goodsNsme;
+		this.goodsName = goodsName;
 		this.count = count;
 		this.money = money;
 		this.isInStock = isInStock;
 		this.warehouseId = warehouseId;
 	}
-	public Purchase() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 	@Override
 	public String toString() {
 		return "Purchase [id=" + id + ", sName=" + sName + ", orderId=" + orderId + ", consignmentDate="
-				+ consignmentDate + ", goodsNsme=" + goodsNsme + ", count=" + count + ", money=" + money
+				+ consignmentDate + ", goodsName=" + goodsName + ", count=" + count + ", money=" + money
 				+ ", isInStock=" + isInStock + ", warehouseId=" + warehouseId + "]";
 	}
 	public String getId() {
@@ -58,11 +58,11 @@ public class Purchase {
 	public void setConsignmentDate(String consignmentDate) {
 		this.consignmentDate = consignmentDate;
 	}
-	public String getGoodsNsme() {
-		return goodsNsme;
+	public String getGoodsName() {
+		return goodsName;
 	}
-	public void setGoodsNsme(String goodsNsme) {
-		this.goodsNsme = goodsNsme;
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
 	}
 	public int getCount() {
 		return count;
@@ -88,7 +88,7 @@ public class Purchase {
 	public void setWarehouseId(int warehouseId) {
 		this.warehouseId = warehouseId;
 	}
-
+	
 	
 	
 	

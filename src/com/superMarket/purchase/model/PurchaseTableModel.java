@@ -3,19 +3,37 @@ package com.superMarket.purchase.model;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 
 import com.superMarket.baseFile.seller.bean.Seller;
 import com.superMarket.baseFile.seller.dao.SellerDao;
 import com.superMarket.baseFile.seller.dao.SellerDaoImpl;
+import com.superMarket.baseFile.warehouse.bean.Warehouse;
+import com.superMarket.baseFile.warehouse.dao.WarehouseDao;
+import com.superMarket.baseFile.warehouse.dao.WarehouseDaoImpl;
 import com.superMarket.purchase.bean.Purchase;
 import com.superMarket.purchase.dao.PurchaseDao;
 import com.superMarket.purchase.dao.PurchaseDaoImpl;
 
-public class PurchaseTableModel extends AbstractTableModel{
+public class PurchaseTableModel extends DefaultTableModel{
 
 	private static final long serialVersionUID = 1L;
 	private PurchaseDao dao = new PurchaseDaoImpl();
-	private  List<Purchase> data  = dao.getPurchaseList();
+	private  List<Purchase> data = null ;
+	private WarehouseDao warehouseDao = new WarehouseDaoImpl();
+	private int row ;
+	
+	public PurchaseTableModel() {
+		this.data  = dao.getPurchaseList();
+		this.row = data.size();
+	}
+	
+	public PurchaseTableModel(List<Purchase> data) {
+		this.data  = data;
+		this.row = data.size();
+	}
+	
+	
 	@Override
 	public int getColumnCount() {
 		
@@ -27,14 +45,12 @@ public class PurchaseTableModel extends AbstractTableModel{
 	 */
 	@Override
 	public int getRowCount() {
-		return data.size();
+		return row;
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		   Purchase purchase = data.get(rowIndex);
-		   
-	
 		   
 		if (columnIndex == 0){
 			if ( purchase.getIsInStock() == 0){
@@ -54,7 +70,7 @@ public class PurchaseTableModel extends AbstractTableModel{
 		if (columnIndex == 4)
 			return purchase.getConsignmentDate();
 		if (columnIndex == 5)
-			return purchase.getGoodsNsme();
+			return purchase.getGoodsName();
 		if (columnIndex == 6)
 			return purchase.getCount();
 		if (columnIndex == 7)
@@ -62,6 +78,11 @@ public class PurchaseTableModel extends AbstractTableModel{
 		if (columnIndex == 8){
 			if (purchase.getWarehouseId() == -1)
 			return "尚未分配库房";
+			else{
+				int id = purchase.getWarehouseId();
+				Warehouse warehouse = warehouseDao.getWarehouseById(id+"");
+				return warehouse.getName();
+			}
 		}
 		return null;
 	}
@@ -85,14 +106,27 @@ public class PurchaseTableModel extends AbstractTableModel{
 		if (column == 7)
 			return  "金额";
 		if (column == 8)
-			return  "库房号";
+			return  "库房";
 		return "查询错误";
 	}
 	
 	  public void setData(List<Purchase> data) {
-		    if (data == null)
-		      throw new IllegalArgumentException("参数data不能为null。");
+		
 		    this.data = data;
+		    System.out.println(data);
+		    data.size();
+		    
 		    fireTableDataChanged();
 		  }
+	  
+	  /**
+	   * 设置表格不可被编辑
+	   */
+	  public boolean isCellEditable(int row, int column) {
+		  if (column == 0 && this.getValueAt(row, 0).equals("未入库")){
+			  return true;
+		  }else{
+          return false;
+		  }
+      }
 }

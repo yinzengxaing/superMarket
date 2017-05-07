@@ -24,6 +24,8 @@ public class PurchaseDaoImpl extends BaseDao<Purchase> implements PurchaseDao {
 	@Override
 	public List<Purchase> getPurchaseListBySName(String sName) {
 		
+		sName = "%"+sName+"%";
+		
 		String sql = "select * from stock where sName like ?";
 		
 		return this.getBeanList(sql, sName);
@@ -32,6 +34,7 @@ public class PurchaseDaoImpl extends BaseDao<Purchase> implements PurchaseDao {
 	@Override
 	public List<Purchase> getPurchaseListByGoodsName(String goodsName) {
 		
+		goodsName = "%"+goodsName+"%";
 		String sql = "select * from stock where goodsName like ? ";
 		
 		return this.getBeanList(sql, goodsName);
@@ -40,9 +43,9 @@ public class PurchaseDaoImpl extends BaseDao<Purchase> implements PurchaseDao {
 	@Override
 	public int addPurchase(Purchase purchase) {
 		
-		String sql = "INSERT INTO stock (sName, orderId, consignmentDate, goodsNsme, count, money, isInStock,warehouseId) VALUES (?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO stock (sName, orderId, consignmentDate, goodsName, count, money, isInStock,warehouseId) VALUES (?,?,?,?,?,?,?,?)";
 		
-		return this.update(sql, purchase.getsName(), purchase.getOrderId(), purchase.getConsignmentDate(),purchase.getGoodsNsme(),purchase.getCount(),purchase.getIsInStock(),purchase.getWarehouseId());
+		return this.update(sql, purchase.getsName(), purchase.getOrderId(), purchase.getConsignmentDate(),purchase.getGoodsName(),purchase.getCount(),purchase.getMoney(),purchase.getIsInStock(),purchase.getWarehouseId());
 	}
 
 	@Override
@@ -55,14 +58,20 @@ public class PurchaseDaoImpl extends BaseDao<Purchase> implements PurchaseDao {
 
 	@Override
 	public int updatePurchase(Purchase purchase) {
-		String sql = "UPDATE stock  SET sName=?, orderId=?, consignmentDate=?, goodsNsme=?, count=?, money=?, isInStock=?,warehouseId=? where id=? ";
-		return this.update(sql,purchase.getsName(), purchase.getOrderId(), purchase.getConsignmentDate(),purchase.getGoodsNsme(),purchase.getCount(),purchase.getIsInStock(),purchase.getWarehouseId(),purchase.getId() );
+		String sql = "UPDATE stock  SET sName=?, orderId=?, consignmentDate=?, goodsName=?, count=?, money=?, isInStock=?,warehouseId=? where id=? ";
+		return this.update(sql,purchase.getsName(), purchase.getOrderId(), purchase.getConsignmentDate(),purchase.getGoodsName(),purchase.getCount(),purchase.getMoney(),purchase.getIsInStock(),purchase.getWarehouseId(),purchase.getId() );
 	}
 
 	@Override
 	public int inStack(String id,String warehouseId) {
 		String sql = "UPDATE stock SET  warehouseId=? where id=? ";
 		return this.update(sql, warehouseId,id);
+	}
+
+	@Override
+	public int updateIsStack(String id) {
+		String sql = "UPDATE stock SET  isInStock=1 where id=? ";
+		return this.update(sql, id);
 	}
 
 }

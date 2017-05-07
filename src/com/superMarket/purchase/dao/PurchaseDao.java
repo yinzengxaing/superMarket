@@ -30,4 +30,9 @@ public interface PurchaseDao {
 	//对商品进行入库操作 warehouseId 为所入库房的库房编号
 	int inStack(String id,String warehouseId);
 	
+	//修改入库状态
+	int updateIsStack(String id);
+	
+	
+	
 }

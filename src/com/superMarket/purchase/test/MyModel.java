@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 
 import com.superMarket.baseFile.goods.bean.Goods;
 import com.superMarket.baseFile.goods.dao.GoodsDao;
@@ -14,11 +15,17 @@ import com.superMarket.purchase.bean.Purchase;
 import com.superMarket.purchase.dao.PurchaseDao;
 import com.superMarket.purchase.dao.PurchaseDaoImpl;
 
-public class MyModel extends AbstractTableModel{
+public class MyModel extends DefaultTableModel{
 	private static final long serialVersionUID = 1L;
 	private PurchaseDao  dao  = new  PurchaseDaoImpl();
 	private  List<Purchase> data = new ArrayList<Purchase>();
+	private int Column;;
+	private int Row;
 	
+	
+	public MyModel(int row ) {
+			this.Row = row;
+	}
 	/**
 	 * 测试数据
 	 */
@@ -39,7 +46,7 @@ public class MyModel extends AbstractTableModel{
 	@Override
 	public int getColumnCount() {
 		
-		return  8;
+		return  Column;
 	}
 
 	/**
@@ -65,7 +72,7 @@ public class MyModel extends AbstractTableModel{
 		if (columnIndex == 4)
 			return purchase.getConsignmentDate();
 		if (columnIndex == 5)
-			return purchase.getGoodsNsme();
+			return purchase.getGoodsName();
 		if (columnIndex == 6)
 			return purchase.getMoney();
 		if (columnIndex == 7)
