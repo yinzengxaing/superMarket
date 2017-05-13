@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 import com.superMarket.login.MainFrame;
 import com.superMarket.login.bean.User;
 import com.superMarket.login.dao.UserDao;
-import com.superMarket.login.dao.impl.UserDaoImpl;
+import com.superMarket.login.dao.UserDaoImpl;
 import com.superMarket.utils.ImgPanel;
 
 import javax.swing.UIManager;

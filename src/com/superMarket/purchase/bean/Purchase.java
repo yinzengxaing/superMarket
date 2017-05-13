@@ -10,7 +10,7 @@ public class Purchase {
 	private int count;
 	private Double money;
 	private int isInStock = 0; //0：未入库  1：入库 初始为 未入库
-	private int warehouseId = 0 ; //所属库房编号 ， 未入库的情况下所属库房编号为0;
+	private int warehouseId = -1 ; //所属库房编号 ， 未入库的情况下所属库房编号为-1;
 	public Purchase() {
 		super();
 		// TODO Auto-generated constructor stub

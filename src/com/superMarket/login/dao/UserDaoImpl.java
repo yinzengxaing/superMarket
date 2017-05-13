@@ -1,7 +1,6 @@
-package com.superMarket.login.dao.impl;
+package com.superMarket.login.dao;
 
 import com.superMarket.login.bean.User;
-import com.superMarket.login.dao.UserDao;
 import com.superMarket.utils.BaseDao;
 
 public class UserDaoImpl extends BaseDao<User>  implements UserDao {

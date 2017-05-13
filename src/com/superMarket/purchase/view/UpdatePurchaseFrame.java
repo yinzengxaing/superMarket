@@ -1,7 +1,5 @@
 package com.superMarket.purchase.view;
 
-
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,7 +33,7 @@ import com.superMarket.utils.DateChooserJButton;
  * @author administrator
  *
  */
-public class AddPurchaseFrame {
+public class UpdatePurchaseFrame {
 	public JFrame frame;
 	private JTextField t_sName;
 	private JLabel label_1;
@@ -47,16 +45,17 @@ public class AddPurchaseFrame {
 	private JTextField t_goodsName;
 	private JTextField t_count;
 	private JTextField t_money;
-	private  DateChooserJButton button;
-	
+	private DateChooserJButton button;
+
 	private WarehouseDao warehouseDao = new WarehouseDaoImpl();
 	private PurchaseDao dao = new PurchaseDaoImpl();
 	private String warehouseId;
-	private String isInStock ;
+	private String isInStock;
 	private Map<String, String> house;
+	private Purchase purchase;
 
-	
-	public AddPurchaseFrame() {
+	public UpdatePurchaseFrame(Purchase purchase) {
+		this.purchase = purchase;
 		initialize();
 	}
 
@@ -130,7 +129,7 @@ public class AddPurchaseFrame {
 		label_14.setBounds(558, 78, 16, 15);
 		frame.getContentPane().add(label_14);
 
-		JButton button_add = new JButton("添加");
+		JButton button_add = new JButton("更新");
 		button_add.setBounds(174, 176, 93, 23);
 		frame.getContentPane().add(button_add);
 		button_add.addActionListener(new AddButtonListener());
@@ -143,58 +142,64 @@ public class AddPurchaseFrame {
 		label_4.setForeground(Color.RED);
 		label_4.setBounds(278, 122, 16, 15);
 		frame.getContentPane().add(label_4);
-		
-		  button=new DateChooserJButton ();
-		  button.setBounds(415, 32, 133, 23);
+
+		button = new DateChooserJButton();
+		button.setBounds(415, 32, 133, 23);
 		frame.getContentPane().add(button);
-		
+
 		JLabel label_5 = new JLabel("库房：");
 		label_5.setBounds(342, 122, 54, 15);
 		frame.getContentPane().add(label_5);
-		
+
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setBounds(421, 119, 127, 21);
 		frame.getContentPane().add(comboBox);
-		
-		
+
 		/**
 		 * 获取库房信息
 		 */
 		List<Warehouse> list = warehouseDao.getWarehouseList();
-		Object[] possibleValues = new Object[list.size()];
-		
-		 house = new HashMap<String,String>();
+
+		house = new HashMap<String, String>();
 		comboBox.addItem("暂不入库");
-		for (int i=0; i<list.size(); i++) { 
-			//将获取的库房信息放入items中
+		for (int i = 0; i < list.size(); i++) {
+			// 将获取的库房信息放入items中
 			comboBox.addItem(list.get(i).getName());
-			possibleValues[i] = list.get(i).getName();
 			house.put(list.get(i).getName(), list.get(i).getId());
-		 }
-		
-		
+		}
+
 		comboBox.addItemListener(new ItemListener() {
-			
+
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				String item = (String)e.getItem();
-				if ("暂不入库".equals(item)){
-					warehouseId = "-1" ;
+				String item = (String) e.getItem();
+				if ("暂不入库".equals(item)) {
+					warehouseId = "-1";
 					isInStock = "0";
-					System.out.println(item);
-				}else{
+
+				} else {
+					String string = house.get(item);
+					
+					//System.out.println(string+"===============");
 					warehouseId = house.get(item);
 					isInStock = "1";
-					
 				}
-				
+
 			}
 		});
-		
 
-		
-		
-		
+		t_count.setText(purchase.getCount() + "");
+		t_goodsName.setText(purchase.getGoodsName());
+		t_money.setText(purchase.getMoney() + "");
+		t_sName.setText(purchase.getsName());
+		button.setText(purchase.getConsignmentDate());
+		Warehouse warehouse = warehouseDao.getWarehouseById(purchase.getWarehouseId()+"");
+		 try {
+			comboBox.setSelectedItem(warehouse.getName());
+		} catch (Exception e1) {
+			return;
+		}
+
 		button_esc.addActionListener(new ActionListener() {
 
 			@Override
@@ -210,57 +215,60 @@ public class AddPurchaseFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
-			
+
+			String id = purchase.getId();
 			String sName = t_sName.getText();
 			String s = UUID.randomUUID().toString();
-			s = s.substring(s.length()-5, s.length());
-			  
-			String orderId = s+button.getText().replace("-", "");
+			s = s.substring(s.length() - 5, s.length());
+
+			String orderId = s + button.getText().replace("-", "");
 			String consignmentDate = button.getText();
 			String goodsName = t_goodsName.getText();
 			String strCount = t_count.getText();
 			String Strmoney = t_money.getText();
-			
-			if (sName.equals("") ||goodsName.equals("") || strCount.equals("") || Strmoney.equals("") ){
-				 JOptionPane.showMessageDialog(null, "请将信息补充完整！", "警告", JOptionPane.ERROR_MESSAGE);
-				 return;
+
+			if (sName.equals("") || goodsName.equals("") || strCount.equals("") || Strmoney.equals("")) {
+				JOptionPane.showMessageDialog(null, "请将信息补充完整！", "警告", JOptionPane.ERROR_MESSAGE);
+				return;
 			}
-			
-			
-			//将字符转化为数字类型
-			int count=0;
-			double money =0.0;
+
+			// 将字符转化为数字类型
+			int count = 0;
+			double money = 0.0;
 			try {
 				count = Integer.parseInt(strCount);
-				money =Double.parseDouble(Strmoney);
+				money = Double.parseDouble(Strmoney);
 			} catch (NumberFormatException e1) {
 				t_count.setText("");
 				t_money.setText("");
-				 JOptionPane.showMessageDialog(null, "请输入合法数字！", "警告", JOptionPane.ERROR_MESSAGE);
-				 return;
+				JOptionPane.showMessageDialog(null, "请输入合法数字！", "警告", JOptionPane.ERROR_MESSAGE);
+				return;
 			}
-			
-			int houseId = -1; 
+
+			int houseId = -1;
 			int isIn = 0;
 			try {
-				houseId= Integer.parseInt(warehouseId);
-				houseId = Integer.parseInt(isInStock);
-			} catch (NumberFormatException e1) {
-			//System.out.println("出错啦");
+				houseId = Integer.parseInt(warehouseId);
+				//System.out.println(houseId);
+				isIn = Integer.parseInt(isInStock);
 				
+			} catch (NumberFormatException e1) {
+				 System.out.println("出错啦");
+
 			}
 			
-			Purchase purchase = new Purchase(null, sName, orderId, consignmentDate, goodsName, count, money, isIn, houseId);
-			
-			dao.addPurchase(purchase);
+			System.out.println(houseId);
+
+			Purchase purchase = new Purchase(id, sName, orderId, consignmentDate, goodsName, count, money, isIn,
+					houseId);
+
+			dao.updatePurchase(purchase);
 			PurchasePanel.table.removeAll();
 			PurchasePanel.table.setModel(new PurchaseTableModel());
-			PurchasePanel.table.getColumnModel().getColumn(0).setCellEditor(new MyRender());//设置编辑器
+			PurchasePanel.table.getColumnModel().getColumn(0).setCellEditor(new MyRender());// 设置编辑器
 			PurchasePanel.table.getColumnModel().getColumn(0).setCellRenderer(new MyRender());
-			 frame.setVisible(false);
-			
-			
+			frame.setVisible(false);
+
 		}
 
 	}

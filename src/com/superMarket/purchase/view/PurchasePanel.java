@@ -156,35 +156,37 @@ public class PurchasePanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			/*int row = table.getSelectedRow();
+			int row = table.getSelectedRow();
 			String id = null;
 			try{
-			 id  = (String) table.getValueAt(row, 0);
+			 id  = (String) table.getValueAt(row, 1);
 			}catch (ArrayIndexOutOfBoundsException ex){
 				System.out.println("未选择修改的列！");
 			}
 			if (id == null){
-				 JOptionPane.showMessageDialog(null, "请选取需要删除的供货商！", "警告", JOptionPane.ERROR_MESSAGE);
+				 JOptionPane.showMessageDialog(null, "请选取需要删除订单信息", "警告", JOptionPane.ERROR_MESSAGE);
 				return;
 				}
 			
 			
 			//询问用户是否真的删除该供货商
 			int isdel = JOptionPane.showConfirmDialog(null,
-				       "是否确定删除该供货商？", "删除供货商？", JOptionPane.YES_NO_OPTION,
+				       "是否确定删除该订单信息？", "删除订单信息？", JOptionPane.YES_NO_OPTION,
 				       JOptionPane.WARNING_MESSAGE, null);
 			if(isdel == 1)
 				return;
 			
-			textField.setText("");
 			textField_1.setText("");
 			
 			
 			
-			dao.delSuppliser(id);
+			purchaseDao.delPurchase(id);
 			//table.removeAll();
-			table.setModel(new SupplierTableModel());
-			*/
+			table.removeAll();
+			table.setModel(new PurchaseTableModel());
+			table.getColumnModel().getColumn(0).setCellEditor(new MyRender());//设置编辑器
+			table.getColumnModel().getColumn(0).setCellRenderer(new MyRender());
+			
 			
 		}
 		
@@ -248,14 +250,14 @@ public class PurchasePanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-	/*
+
 			
 			//获取选取的行
 			int row = table.getSelectedRow();
 			//获取选取的id
 			String id = null;
 			try{
-			id = (String) table.getValueAt(row, 0);
+			id = (String) table.getValueAt(row, 1);
 			}catch(ArrayIndexOutOfBoundsException ex){
 				System.out.println("未选取修改的行");
 			}
@@ -265,14 +267,15 @@ public class PurchasePanel {
 				return;
 				
 			}
-			textField.setText("");
 			textField_1.setText("");
 			//获取选取的供货商的信息
-			Supplier supplier = dao.getSuppliserById(id);
-			System.out.println("供货商信息"+supplier);
+			Purchase purchase = purchaseDao.getPurchaseById(id);
 			//将信息传入修改页面
-			UpdateSupplierFrame frame = new UpdateSupplierFrame(supplier);
-			table.setModel(new SupplierTableModel());*/
+			new UpdatePurchaseFrame(purchase);
+			table.removeAll();
+			table.setModel(new PurchaseTableModel());
+			table.getColumnModel().getColumn(0).setCellEditor(new MyRender());//设置编辑器
+			table.getColumnModel().getColumn(0).setCellRenderer(new MyRender());
 			
 		}
 		
