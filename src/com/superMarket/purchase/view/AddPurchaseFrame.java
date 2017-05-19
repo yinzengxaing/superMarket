@@ -174,27 +174,22 @@ public class AddPurchaseFrame {
 		
 		
 		comboBox.addItemListener(new ItemListener() {
-			
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				String item = (String)e.getItem();
+				System.out.println(item);
 				if ("暂不入库".equals(item)){
 					warehouseId = "-1" ;
 					isInStock = "0";
-					System.out.println(item);
 				}else{
 					warehouseId = house.get(item);
+					System.out.println(warehouseId);
+					System.out.println(item);
 					isInStock = "1";
-					
 				}
 				
 			}
 		});
-		
-
-		
-		
-		
 		button_esc.addActionListener(new ActionListener() {
 
 			@Override
@@ -245,13 +240,12 @@ public class AddPurchaseFrame {
 			int isIn = 0;
 			try {
 				houseId= Integer.parseInt(warehouseId);
-				houseId = Integer.parseInt(isInStock);
+				isIn = Integer.parseInt(isInStock);
 			} catch (NumberFormatException e1) {
 			//System.out.println("出错啦");
 				
 			}
-			
-			Purchase purchase = new Purchase(null, sName, orderId, consignmentDate, goodsName, count, money, isIn, houseId);
+			Purchase purchase = new Purchase(null,sName, orderId, consignmentDate, goodsName, count, money, isIn,houseId);
 			
 			dao.addPurchase(purchase);
 			PurchasePanel.table.removeAll();

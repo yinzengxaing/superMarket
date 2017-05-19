@@ -43,6 +43,7 @@ public class PurchaseDaoImpl extends BaseDao<Purchase> implements PurchaseDao {
 	@Override
 	public int addPurchase(Purchase purchase) {
 		
+		System.out.println(purchase);
 		String sql = "INSERT INTO stock (sName, orderId, consignmentDate, goodsName, count, money, isInStock,warehouseId) VALUES (?,?,?,?,?,?,?,?)";
 		
 		return this.update(sql, purchase.getsName(), purchase.getOrderId(), purchase.getConsignmentDate(),purchase.getGoodsName(),purchase.getCount(),purchase.getMoney(),purchase.getIsInStock(),purchase.getWarehouseId());
