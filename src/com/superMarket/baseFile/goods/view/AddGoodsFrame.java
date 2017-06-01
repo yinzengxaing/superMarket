@@ -193,12 +193,6 @@ public class AddGoodsFrame {
 				 return;
 			}
 			 
-			 
-			 
-			 //System.out.println(name+"name");
-
-			 
-			 
 			 Goods goods = new Goods(null, goodsName, goodsBewrite, units, stockPrice, retailPrice, associatorPrice);
 			 dao.addGoods(goods);
 			 

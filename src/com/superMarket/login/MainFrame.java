@@ -20,9 +20,10 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import com.superMarket.baseFile.BaseFilePanel;
+import com.superMarket.inStock.BaseInWarehousePanel;
+import com.superMarket.outStock.BaseOutWarehousePanel;
 import com.superMarket.purchase.BasePurchasePanel;
 import com.superMarket.purchase.bean.Purchase;
-import com.superMarket.purchase.view.PurchasePanel;
 import com.superMarket.utils.ImgPanel;
 
 import java.awt.BorderLayout;
@@ -107,6 +108,7 @@ public class MainFrame {
 		button_1.setIcon(new ImageIcon("./icon/in.png"));
 		button_1.setBounds(386, 0, 104, 44);
 		panel.add(button_1);
+		button_1.addActionListener(new InStack());
 
 		// 出库管理按钮
 		JButton button_2 = new JButton();
@@ -115,6 +117,7 @@ public class MainFrame {
 		button_2.setIcon(new ImageIcon("./icon/out.png"));
 		button_2.setBounds(572, 0, 104, 44);
 		panel.add(button_2);
+		button_2.addActionListener(new OutStack());
 
 		// 人员管理按钮
 		JButton button_3 = new JButton("");
@@ -252,7 +255,11 @@ public class MainFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+			backPanel.removeAll();
+			BaseInWarehousePanel inWarehousePanel = new BaseInWarehousePanel();
+			backPanel.add(inWarehousePanel);
+			backPanel.validate();
+			backPanel.repaint();
 
 		}
 
@@ -269,8 +276,11 @@ public class MainFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-
+			backPanel.removeAll();
+			BaseOutWarehousePanel outWarehousePanel = new BaseOutWarehousePanel();
+			backPanel.add(outWarehousePanel);
+			backPanel.validate();
+			backPanel.repaint();
 		}
 	}
 

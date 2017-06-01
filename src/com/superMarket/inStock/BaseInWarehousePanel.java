@@ -1,4 +1,4 @@
-package com.superMarket.purchase;
+package com.superMarket.inStock;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -12,21 +12,19 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import com.superMarket.purchase.bean.Purchase;
-import com.superMarket.purchase.view.PurchasePanel;
-
-public class BasePurchasePanel extends JPanel {
-
+import com.superMarket.inStock.view.InWarehousePanel;
+public class BaseInWarehousePanel extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private JPanel panel;
 	private JTree tree;
 
-	public BasePurchasePanel() {
+	public BaseInWarehousePanel() {
 
 		this.getContentPanel();
 	}
 
 	public void getContentPanel() {
-		this.setBorder(BorderFactory.createTitledBorder(null, "订单采购管理", TitledBorder.DEFAULT_JUSTIFICATION,
+		this.setBorder(BorderFactory.createTitledBorder(null, "入库管理", TitledBorder.DEFAULT_JUSTIFICATION,
 				TitledBorder.TOP, new Font("微软雅黑", Font.BOLD, 12), null));
 		setLayout(null);
 
@@ -36,9 +34,9 @@ public class BasePurchasePanel extends JPanel {
 		add(tree_panel);
 		tree_panel.setLayout(null);
 
-		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("订单采购管理");
+		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("入库管理");
 		// 创建子节点
-		DefaultMutableTreeNode childNode_purchase = new DefaultMutableTreeNode("订单采购管理");
+		DefaultMutableTreeNode childNode_purchase = new DefaultMutableTreeNode("入库管理");
 
 		// rootNode加入子节点
 		rootNode.add(childNode_purchase);
@@ -72,14 +70,12 @@ public class BasePurchasePanel extends JPanel {
 				// 判断节点
 				if (node.isLeaf()) {
 					String nodeStr = node.toString();
-					// System.out.println(nodeStr);
 					// 选中供货管理模块
-					if ("订单采购管理".equals(nodeStr)) {
-
-						PurchasePanel purchasePanel = new PurchasePanel();
-						JPanel purchase_panel = purchasePanel.getPurchasePanel();
+					if ("入库管理".equals(nodeStr)) {
+						InWarehousePanel inWarehousePanel = new InWarehousePanel();
+						JPanel panel2 = inWarehousePanel.getPanel();
 						panel.removeAll();
-						panel.add(purchase_panel);
+						panel.add(panel2);
 						panel.validate();
 						panel.repaint();
 					

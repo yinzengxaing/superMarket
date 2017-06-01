@@ -75,4 +75,10 @@ public class PurchaseDaoImpl extends BaseDao<Purchase> implements PurchaseDao {
 		return this.update(sql, id);
 	}
 
+	@Override
+	public List<Purchase> getAllOrderId() {
+		String sql = "select orderId from stock";
+		return this.getBeanList(sql);
+	}
+
 }

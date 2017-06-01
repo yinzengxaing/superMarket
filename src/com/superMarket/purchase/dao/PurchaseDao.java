@@ -33,6 +33,9 @@ public interface PurchaseDao {
 	//修改入库状态
 	int updateIsStack(String id);
 	
+	//获取所有的订单号
+	List<Purchase> getAllOrderId(); 
+	
 	
 	
 }
