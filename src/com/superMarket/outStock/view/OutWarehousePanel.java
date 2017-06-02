@@ -130,11 +130,11 @@ public class OutWarehousePanel {
 			try {
 				id = (String) table.getValueAt(row, 0);
 			} catch (Exception e2) {
-				JOptionPane.showMessageDialog(null, "请选择需要删除的入库项！", "警告", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "请选择需要删除的出库项！", "警告", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 
-			int isdel = JOptionPane.showConfirmDialog(null, "是否确定删除该入库项？", "删除入库项？", JOptionPane.YES_NO_OPTION,
+			int isdel = JOptionPane.showConfirmDialog(null, "是否确定删除该入库项？", "删除出库项？", JOptionPane.YES_NO_OPTION,
 					JOptionPane.WARNING_MESSAGE, null);
 			if (isdel == 1)
 				return;
@@ -192,7 +192,7 @@ public class OutWarehousePanel {
 
 				id = (String) table.getValueAt(row, 0); // 获取选取的销售商
 			} catch (Exception e2) {
-				JOptionPane.showMessageDialog(null, "请选取需要修改的入库项！", "警告", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "请选取需要修改的出库项！", "警告", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 

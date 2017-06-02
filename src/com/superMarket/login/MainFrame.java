@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import com.superMarket.baseFile.BaseFilePanel;
+import com.superMarket.department.BaseDepartmentPanel;
+import com.superMarket.employee.BaseEmployeePanel;
 import com.superMarket.inStock.BaseInWarehousePanel;
 import com.superMarket.outStock.BaseOutWarehousePanel;
 import com.superMarket.purchase.BasePurchasePanel;
@@ -126,6 +128,7 @@ public class MainFrame {
 		button_3.setIcon(new ImageIcon("./icon/people.png"));
 		button_3.setBounds(782, 0, 104, 44);
 		panel.add(button_3);
+		button_3.addActionListener(new ManagePeope());
 
 		// 部门管理按钮
 		JButton button_4 = new JButton("");
@@ -134,6 +137,7 @@ public class MainFrame {
 		button_4.setIcon(new ImageIcon("./icon/employee.png"));
 		button_4.setBounds(992, 0, 104, 44);
 		panel.add(button_4);
+		button_4.addActionListener(new ManageDepartment());
 
 		// 基本档案管理
 		JButton btnNewButton = new JButton(/* "基本档案" */);
@@ -295,7 +299,11 @@ public class MainFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+			backPanel.removeAll();
+			BaseEmployeePanel baseDepartmentPanel = new BaseEmployeePanel();
+			backPanel.add(baseDepartmentPanel);
+			backPanel.validate();
+			backPanel.repaint();
 
 		}
 
@@ -312,7 +320,11 @@ public class MainFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
+			backPanel.removeAll();
+			BaseDepartmentPanel baseDepartmentPanel = new BaseDepartmentPanel();
+			backPanel.add(baseDepartmentPanel);
+			backPanel.validate();
+			backPanel.repaint();
 		}
 
 	}
