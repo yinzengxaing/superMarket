@@ -250,8 +250,6 @@ public class PurchasePanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-
-			
 			//获取选取的行
 			int row = table.getSelectedRow();
 			//获取选取的id
@@ -263,7 +261,7 @@ public class PurchasePanel {
 			}
 			
 			if (id == null){
-				 JOptionPane.showMessageDialog(null, "请选取需要修改的供货商！", "警告", JOptionPane.ERROR_MESSAGE);
+				 JOptionPane.showMessageDialog(null, "请选取需要修改订单！", "警告", JOptionPane.ERROR_MESSAGE);
 				return;
 				
 			}
